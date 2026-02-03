@@ -1,22 +1,74 @@
 name: Metrics
 on:
-  # 毎日0時に更新
+  # 毎日0時に自動更新
   schedule: [{cron: "0 0 * * *"}]
   # 手動更新も可能に
   workflow_dispatch:
-  
+
 jobs:
   github-metrics:
     runs-on: ubuntu-latest
     steps:
-      - uses: lowlighter/metrics@latest
+      # -----------------------------------------------------------
+      # 1. メイン画像（ヘッダー ＋ 線グラフ）
+      #    出力ファイル名: github-metrics.svg
+      # -----------------------------------------------------------
+      - name: Main Metrics (Header + Lines)
+        uses: lowlighter/metrics@latest
         with:
-          # あなたのGitHubトークン（Repo権限付き）
+          filename: github-metrics.svg
           token: ${{ secrets.METRICS_TOKEN }}
           
-          # ここがポイント！
-          # "activity" プラグインを使って線グラフを表示
-          plugin_activity: yes
-          plugin_activity_limit: 5    # 表示するイベント数の上限（調整可）
-          plugin_activity_days: 365   # ★ここで「365日」を指定
-          plugin_activity_filter: all # すべてのアクティビティを含める
+          # 基本設定（ヘッダーなどを表示）
+          base: header, repositories
+          
+          # 線グラフ（1年分の推移）の設定
+          plugin_lines: yes
+          plugin_lines_history_limit: 1
+          plugin_lines_repositories_limit: 4
+          plugin_lines_sections: repositories, history
+
+      # -----------------------------------------------------------
+      # 2. 3D Skyline - 2024年版
+      #    出力ファイル名: metrics-skyline-2024.svg
+      # -----------------------------------------------------------
+      - name: Skyline 2024
+        uses: lowlighter/metrics@latest
+        with:
+          filename: metrics-skyline-2024.svg
+          token: ${{ secrets.METRICS_TOKEN }}
+          base: "" # ヘッダーなし（3Dグラフだけ出力）
+          plugin_skyline: yes
+          plugin_skyline_year: 2024
+          plugin_skyline_frames: 60
+          plugin_skyline_quality: 0.5
+
+      # -----------------------------------------------------------
+      # 3. 3D Skyline - 2025年版
+      #    出力ファイル名: metrics-skyline-2025.svg
+      # -----------------------------------------------------------
+      - name: Skyline 2025
+        uses: lowlighter/metrics@latest
+        with:
+          filename: metrics-skyline-2025.svg
+          token: ${{ secrets.METRICS_TOKEN }}
+          base: ""
+          plugin_skyline: yes
+          plugin_skyline_year: 2025
+          plugin_skyline_frames: 60
+          plugin_skyline_quality: 0.5
+
+      # -----------------------------------------------------------
+      # 4. 3D Skyline - 2026年版（今年）
+      #    出力ファイル名: metrics-skyline-2026.svg
+      # -----------------------------------------------------------
+      - name: Skyline 2026
+        uses: lowlighter/metrics@latest
+        with:
+          filename: metrics-skyline-2026.svg
+          token: ${{ secrets.METRICS_TOKEN }}
+          base: ""
+          plugin_skyline: yes
+          plugin_skyline_year: 2026
+          plugin_skyline_frames: 60
+          plugin_skyline_quality: 0.5
