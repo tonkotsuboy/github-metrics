@@ -1,0 +1,22 @@
+name: Metrics
+on:
+  # 毎日0時に更新
+  schedule: [{cron: "0 0 * * *"}]
+  # 手動更新も可能に
+  workflow_dispatch:
+  
+jobs:
+  github-metrics:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: lowlighter/metrics@latest
+        with:
+          # あなたのGitHubトークン（Repo権限付き）
+          token: ${{ secrets.METRICS_TOKEN }}
+          
+          # ここがポイント！
+          # "activity" プラグインを使って線グラフを表示
+          plugin_activity: yes
+          plugin_activity_limit: 5    # 表示するイベント数の上限（調整可）
+          plugin_activity_days: 365   # ★ここで「365日」を指定
+          plugin_activity_filter: all # すべてのアクティビティを含める
