@@ -12,27 +12,21 @@ jobs:
       contents: write
     steps:
       # -----------------------------------------------------------
-      # 1. メイン画像（ヘッダー ＋ 線グラフ）
-      #    出力ファイル名: github-metrics.svg
+      # 1. メイン画像（変更なし）
       # -----------------------------------------------------------
       - name: Main Metrics (Header + Lines)
         uses: lowlighter/metrics@latest
         with:
           filename: github-metrics.svg
           token: ${{ secrets.METRICS_TOKEN }}
-          
-          # 基本設定
           base: header, repositories
-          
-          # 線グラフ（1年分の推移）の設定
           plugin_lines: yes
           plugin_lines_history_limit: 1
           plugin_lines_repositories_limit: 4
           plugin_lines_sections: repositories, history
 
       # -----------------------------------------------------------
-      # 2. 3D Skyline - 2024年版
-      #    出力ファイル名: metrics-skyline-2024.svg
+      # 2. Skyline 2024（軽量化: frames 60 -> 10）
       # -----------------------------------------------------------
       - name: Skyline 2024
         uses: lowlighter/metrics@latest
@@ -42,14 +36,12 @@ jobs:
           base: "" 
           plugin_skyline: yes
           plugin_skyline_year: 2024
-          plugin_skyline_frames: 60
+          plugin_skyline_frames: 10    # 60は重すぎるので10に変更
           plugin_skyline_quality: 0.5
-          # エラー対策: 互換モードをONにする
           plugin_skyline_compatibility: yes
 
       # -----------------------------------------------------------
-      # 3. 3D Skyline - 2025年版
-      #    出力ファイル名: metrics-skyline-2025.svg
+      # 3. Skyline 2025（軽量化: frames 60 -> 10）
       # -----------------------------------------------------------
       - name: Skyline 2025
         uses: lowlighter/metrics@latest
@@ -59,14 +51,12 @@ jobs:
           base: ""
           plugin_skyline: yes
           plugin_skyline_year: 2025
-          plugin_skyline_frames: 60
+          plugin_skyline_frames: 10    # 変更
           plugin_skyline_quality: 0.5
-          # エラー対策
           plugin_skyline_compatibility: yes
 
       # -----------------------------------------------------------
-      # 4. 3D Skyline - 2026年版（今年）
-      #    出力ファイル名: metrics-skyline-2026.svg
+      # 4. Skyline 2026（軽量化: frames 60 -> 10）
       # -----------------------------------------------------------
       - name: Skyline 2026
         uses: lowlighter/metrics@latest
@@ -76,7 +66,6 @@ jobs:
           base: ""
           plugin_skyline: yes
           plugin_skyline_year: 2026
-          plugin_skyline_frames: 60
+          plugin_skyline_frames: 10    # 変更
           plugin_skyline_quality: 0.5
-          # エラー対策
           plugin_skyline_compatibility: yes
